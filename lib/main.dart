@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mapbox;
 import 'package:geolocator/geolocator.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const MaterialApp(home: GoongRoutingMap()));
 }
 
@@ -24,13 +26,13 @@ class _GoongRoutingMapState extends State<GoongRoutingMap> {
   final TextEditingController _startCtrl = TextEditingController();
   final TextEditingController _endCtrl = TextEditingController();
 
-  final String _goongMapKey = "xxx";
-  final String _goongApiKey = "xxx";
+  final String? _goongMapKey = dotenv.env["GOONG_MAP_KEY"];
+  final String? _goongApiKey = dotenv.env["GOONG_API_KEY"];
 
   @override
   void initState() {
     super.initState();
-    mapbox.MapboxOptions.setAccessToken("pk.xxx");
+    mapbox.MapboxOptions.setAccessToken(dotenv.env["ASSCESS_TOKEN"]!);
   }
 
   void _onMapCreated(mapbox.MapboxMap mapboxMap) async {
